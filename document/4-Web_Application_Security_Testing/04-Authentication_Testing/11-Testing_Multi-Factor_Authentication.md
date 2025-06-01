@@ -2,7 +2,7 @@
 
 |ID          |
 |------------|
-|WSTG-AUTH-11|
+|WSTG-ATHN-11|
 
 ## Summary
 
@@ -49,6 +49,8 @@ The first step for testing MFA is to identify all of the authentication function
 All of the different login methods should be reviewed, to ensure that MFA is enforced consistently. If some methods do not require MFA, then these can provide a simple method to bypass them.
 
 If the authentication is done in multiple steps then it may be possible to bypass it by completing the first step of the authentication process (entering the username and password), and then force-browsing to the application or making direct API requests without completing the second stage (entering the MFA code).
+
+If the authentication is using a OpenID Connect (OIDC) provider that allows custom authentication flows (or policies) such as Azure B2C, there may be multiple flows defined, some of which may not require MFA. For example if the application authenticates with a flow called `B2C_1_SignInWithMFA`, then try tampering that to `B2C_1_SignIn`, `B2C_1_SignInWithoutMFA` or other similar values.
 
 In some cases, there may also be intentional MFA bypasses implemented, such as not requiring MFA:
 
@@ -159,7 +161,7 @@ An alternative approach to OTP codes is to send a push notification to the user'
 Properly evaluating the security of this requires the scope of testing to be expanded to cover both the mobile app, and any supporting APIs or services used by it; meaning that it would often be outside of the scope of a traditional web application test. However, there are a couple of simple checks that can be performed without testing the mobile app, including:
 
 - Does the notification provide sufficient context (IP addresses, location, etc) for the user to make an informed decision about whether to approve or deny it?
-- Is there any kind of challenge and response mechanism (such as providing a code on the website that the user needs to enter into the app - often called "number matching" or "number challenge")?
+- Is there any kind of challenge and response mechanism (such as providing a code on the site that the user needs to enter into the app - often called "number matching" or "number challenge")?
 - Is there any rate limiting or mechanisms to prevent the user from being spammed with notifications in the hope that they will just blindly accept one?
 
 ### IP Address and Location Filtering
